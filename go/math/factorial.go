@@ -63,7 +63,7 @@ func recursion_facto_of_n_number(n int) int {
 
 func main() {
 	const n = 12
-	bench.Pprint(facto_of_n_number, 12)
-	bench.Pprint(big_int_facto_of_n_number, 12)
-	bench.Pprint(recursion_facto_of_n_number, 12)
+	bench.Pprint("facto_of_n_number", func() int { return facto_of_n_number(22) })
+	bench.Pprint("big_int_facto_of_n_number", func() *big.Int { return big_int_facto_of_n_number(22) })
+	bench.Pprint("recursion_facto_of_n_number", func() int { return recursion_facto_of_n_number(22) })
 }

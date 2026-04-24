@@ -3,31 +3,24 @@ package bench
 import (
 	"fmt"
 	"math/big"
-	"reflect"
-	"runtime"
-	"strings"
 	"time"
 )
 
-func Pprint[In any, Out any](fn func(In) Out, arg1 In) {
-	ptr := reflect.ValueOf(fn).Pointer()
-	funcName := runtime.FuncForPC(ptr).Name()
-	funcName = strings.ReplaceAll(funcName, "main.", "")
-
+func Pprint[Out any](funcName string, fn func() Out) {
 	start := time.Now()
-	results := fn(arg1)
+	results := fn()
 	elapsed := time.Since(start)
 
 	switch v := any(results).(type) {
 	case *big.Int:
-		fmt.Printf("Function: %s | Input: [%v] | Result: %s | Time: %s\n",
-			funcName, arg1, bigIntToScientific(v), elapsed)
+		fmt.Printf("Function: %s |  Result: %s | Time: %s\n",
+			funcName, bigIntToScientific(v), elapsed)
 	case big.Int:
-		fmt.Printf("Function: %s | Input: [%v] | Result: %s | Time: %s\n",
-			funcName, arg1, bigIntToScientific(&v), elapsed)
+		fmt.Printf("Function: %s |  Result: %s | Time: %s\n",
+			funcName, bigIntToScientific(&v), elapsed)
 	default:
-		fmt.Printf("Function: %s | Input: [%v] | Result: %v | Time: %s\n",
-			funcName, arg1, v, elapsed)
+		fmt.Printf("Function: %s |  Result: %v | Time: %s\n",
+			funcName, v, elapsed)
 	}
 }
 
